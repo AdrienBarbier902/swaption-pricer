@@ -3,14 +3,17 @@
 
 ## Overview
 
-This project implements a simplified **interest rate derivatives pricing framework** in Python.  
-Starting from market interest rate data retrieved from the **European Central Bank (ECB) API**, the project constructs a yield curve, computes discount factors and forward swap rates, and prices a **European 2Y10Y payer swaption using the Black model**.
+This project implements a simplified **interest rate derivatives pricing framework** in Python.
 
-The objective is to illustrate the complete workflow used in interest rate derivatives markets, from **market data acquisition to derivative pricing and risk analysis**.
+Starting from market interest rate data retrieved from the **European Central Bank (ECB) zero-coupon yield curve dataset**, the project constructs a yield curve, computes discount factors and forward swap rates, and prices a **European 2Y10Y payer swaption using the Black model**.
+
+The objective of the project is to illustrate the full workflow used in interest rate derivatives markets, from **market data acquisition to derivative pricing and sensitivity analysis**.
 
 ---
 
 # Project Workflow
+
+The pricing framework follows the typical steps used in interest rate derivatives pricing:
 
 1. Market Data Collection  
 2. Yield Curve Construction  
@@ -19,6 +22,30 @@ The objective is to illustrate the complete workflow used in interest rate deriv
 5. Swaption Pricing using the Black Model  
 6. Sensitivity Analysis  
 7. Corporate Hedging Example  
+
+---
+
+# Project Structure
+
+```
+swaption-pricer
+│
+├── api
+│   └── download_market_data.py
+│
+├── models
+│   └── yield_curve.py
+│
+├── pricing
+│   ├── swap.py
+│   └── swaption.py
+│
+├── utils
+│   └── math_utils.py
+│
+├── main.py
+└── README.md
+```
 
 ---
 
@@ -63,6 +90,23 @@ Example values:
 
 ---
 
+# Swap Annuity
+
+The **swap annuity** represents the present value of the fixed leg payments of the swap.
+
+$$
+A = \sum_{i=1}^{n} \Delta_i DF(T_i)
+$$
+
+Where:
+
+- $A$ : swap annuity  
+- $DF(T_i)$ : discount factor at payment date $T_i$  
+- $\Delta_i$ : accrual period between $T_{i-1}$ and $T_i$  
+- $n$ : number of fixed leg payments  
+
+---
+
 # Forward Swap Rate
 
 The swaption considered in this project is a **2Y10Y payer swaption**.
@@ -83,24 +127,18 @@ $$
 
 Where:
 
-- $S$ : forward swap rate
-- $DF(T)$ : discount factor at time $T$
-- $T_0$ : swap start date
-- $T_n$ : swap maturity
-- $T_i$ : payment date of coupon $i$
-- $\Delta_i$ : accrual period between $T_{i-1}$ and $T_i$
-- $n$ : number of fixed leg payments
+- $S$ : forward swap rate  
+- $DF(T)$ : discount factor at time $T$  
+- $T_0$ : swap start date  
+- $T_n$ : swap maturity  
+- $T_i$ : payment date of coupon $i$  
+- $\Delta_i$ : accrual period between $T_{i-1}$ and $T_i$  
+- $n$ : number of fixed leg payments  
 
-And :
+Results:
 
-$$
-Annuity = \sum_{i=1}^{n} \Delta_i DF(T_i)
-$$
-
-Result:
-
-Forward Swap Rate ≈ **3.29%**  
-Swap Annuity ≈ **8.16**
+- **Forward Swap Rate ≈ 3.29%**
+- **Swap Annuity ≈ 8.16**
 
 ---
 
@@ -116,10 +154,10 @@ Where:
 
 | Symbol | Meaning |
 |------|---------|
-| F | Forward swap rate |
-| K | Strike rate |
-| A | Swap annuity |
-| N(.) | Normal cumulative distribution |
+| $F$ | Forward swap rate |
+| $K$ | Strike rate |
+| $A$ | Swap annuity |
+| $N(\cdot)$ | Normal cumulative distribution |
 
 Example parameters:
 
@@ -150,13 +188,13 @@ Higher volatility increases the probability that the **forward swap rate exceeds
 
 ## Strike Sensitivity
 
-Strike values are analysed around the **ATM forward rate (F)**.
+Strike values are analysed around the **ATM forward rate ($F$)**.
 
 | Strike | Swaption Price |
 |-------|----------------|
-| F − 1% | 8.46% |
-| ATM (F) | 3.02% |
-| F + 1% | 0.81% |
+| $F - 1\%$ | 8.46% |
+| ATM ($F$) | 3.02% |
+| $F + 1\%$ | 0.81% |
 
 For a **payer swaption**, the price decreases as the strike increases.
 
@@ -172,13 +210,13 @@ The firm purchases a **2Y10Y payer swaption** to hedge against rising interest r
 |----------|-------|
 | Notional | EUR 100,000,000 |
 | Swaption Premium | EUR 3,020,000 |
-| Maximum Fixed Rate Locked (K)| 3.29% |
+| Maximum Fixed Rate Locked (K) | 3.29% |
 | Break-even Rate | 3.66% |
 
 Break-even rate:
 
 $$
-R_{BE} = K + \frac{Premium}{A N}
+R_{BE} = K + \frac{Premium}{A \times N}
 $$
 
 If future interest rates exceed the break-even rate, the hedge becomes profitable.
@@ -197,10 +235,11 @@ Possible extensions include:
 
 - Yield curve bootstrapping
 - Volatility surface calibration
-- Hull-White or LIBOR Market Model implementations
+- Hull–White interest rate model
+- LIBOR Market Model (LMM)
 
 ---
 
 # Author
 
-Adrien Barbier  
+Adrien Barbier
