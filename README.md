@@ -109,6 +109,9 @@ Where:
 
 # Forward Swap Rate
 
+The forward swap rate represents the fixed interest rate that makes the value of an interest rate swap equal to zero at its start date.
+In other words, it is the fixed rate that equates the present value of the fixed leg payments with the present value of the floating leg payments. This rate is the underlying variable used in the pricing of swaptions.
+
 The swaption considered in this project is a **2Y10Y payer swaption**.
 
 Meaning:
@@ -158,6 +161,21 @@ Where:
 | $K$ | Strike rate |
 | $A$ | Swap annuity |
 | $N(\cdot)$ | Normal cumulative distribution |
+
+The terms $d_1$ and $d_2$ are intermediate variables that capture the relationship between the forward swap rate, the strike rate, the volatility of the underlying rate and the time to maturity of the option.
+
+$$
+d_1 = \frac{\ln(F/K) + \frac{1}{2}\sigma^2 T}{\sigma \sqrt{T}}
+$$
+
+$$
+d_2 = d_1 - \sigma \sqrt{T}
+$$
+
+Where:
+
+- $\sigma$ : volatility of the forward swap rate  
+- $T$ : time to maturity of the swaption
 
 Example parameters:
 
@@ -212,6 +230,8 @@ The firm purchases a **2Y10Y payer swaption** to hedge against rising interest r
 | Swaption Premium | EUR 3,020,000 |
 | Maximum Fixed Rate Locked (K) | 3.29% |
 | Break-even Rate | 3.66% |
+
+The break-even rate is the interest rate level at which the payoff from exercising the swaption exactly compensates for the premium paid.
 
 Break-even rate:
 
