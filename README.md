@@ -33,16 +33,16 @@ swaption-pricer
 ├── api
 │   └── download_market_data.py
 │
-├── models
+├── Data
+│   └── market_rates.csv
+│
+├── Report
+│   └── yield_curve.pdf
+│
+├── src
+│   └── swap_rate.py
+│   └── swaption_pricer.py
 │   └── yield_curve.py
-│
-├── pricing
-│   ├── swap.py
-│   └── swaption.py
-│
-├── utils
-│   └── math_utils.py
-│
 ├── main.py
 └── README.md
 ```
