@@ -192,9 +192,9 @@ Strike values are analysed around the **ATM forward rate ($F$)**.
 
 | Strike | Swaption Price |
 |-------|----------------|
-| $F - 1\%$ | 8.46% |
+| F - 1% | 8.46% |
 | ATM ($F$) | 3.02% |
-| $F + 1\%$ | 0.81% |
+| F + 1% | 0.81% |
 
 For a **payer swaption**, the price decreases as the strike increases.
 
